@@ -6,3 +6,5 @@ create user calendar identified by 1234;
 grant connect, resource to calendar;
 -- tablespace 사용권한 부여
 grant unlimited tablespace to calendar;
+
+김다빈 대머리년
