@@ -1,0 +1,38 @@
+<!-- 리스트는 마이페이지 같은 곳에서 전체로 볼 수 있게 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Event List</title>
+</head>
+<body>
+<h1>Event List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Event ID</th>
+        <th>Title</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="event : ${eventList}">
+        <td th:text="${event.event_id}"></td>
+        <td th:text="${event.title}"></td>
+        <td th:text="${#dates.format(event.start_date, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${#dates.format(event.end_date, 'yyyy-MM-dd HH:mm')}"></td>
+        <td>
+            <a th:href="@{/event/detail.do/{event_id}/{member_id}(event_id=${event.event_id}, member_id=${event.member_id})}">View</a>
+            <a th:href="@{/event/update.do/{event_id}/{member_id}(event_id=${event.event_id}, member_id=${event.member_id})}">Edit</a>
+            <form th:action="@{/event/delete.do/{event_id}/{member_id}(event_id=${event.event_id}, member_id=${event.member_id})}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/event/create.do}">Create New Event</a>
+</body>
+</html>
