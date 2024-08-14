@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Update Event</title>
 </head>
 <body>
@@ -9,33 +8,27 @@
 <form th:action="@{/event/update.do/{event_id}/{member_id}(event_id=${eventDto.event_id}, member_id=${eventDto.member_id})}" th:object="${eventDto}" method="post">
     <div>
         <label for="title">Title:</label>
-        <input type="text" id="title" th:field="*{title}" placeholder="Enter title" />
-        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+        <input type="text" id="title" th:field="*{title}" />
+        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</div>
     </div>
     <div>
-        <label for="category_id">Category:</label>
-        <input type="number" id="category_id" th:field="*{category_id}" placeholder="Enter category ID" />
-        <div th:if="${#fields.hasErrors('category_id')}" th:errors="*{category_id}"></div>
+        <label for="category_id">Category ID:</label>
+        <input type="number" id="category_id" th:field="*{category_id}" />
     </div>
     <div>
         <label for="memo">Memo:</label>
-        <textarea id="memo" th:field="*{memo}" placeholder="Enter memo"></textarea>
-        <div th:if="${#fields.hasErrors('memo')}" th:errors="*{memo}"></div>
+        <textarea id="memo" th:field="*{memo}"></textarea>
     </div>
     <div>
         <label for="start_date">Start Date:</label>
-        <input type="datetime-local" id="start_date" th:field="*{start_date}" />
-        <div th:if="${#fields.hasErrors('start_date')}" th:errors="*{start_date}"></div>
+        <input type="date" id="start_date" th:field="*{start_date}" />
     </div>
     <div>
         <label for="end_date">End Date:</label>
-        <input type="datetime-local" id="end_date" th:field="*{end_date}" />
-        <div th:if="${#fields.hasErrors('end_date')}" th:errors="*{end_date}"></div>
+        <input type="date" id="end_date" th:field="*{end_date}" />
     </div>
-    <div>
-        <button type="submit">Update Event</button>
-    </div>
+    <button type="submit">Update</button>
 </form>
-<a th:href="@{/event/list.do}">Back to Event List</a>
+<a href="/event/list.do">Back to Event List</a>
 </body>
 </html>

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Event Detail</title>
 </head>
 <body>
@@ -11,10 +10,15 @@
     <p><strong>Title:</strong> <span th:text="${eventVo.title}"></span></p>
     <p><strong>Category ID:</strong> <span th:text="${eventVo.category_id}"></span></p>
     <p><strong>Memo:</strong> <span th:text="${eventVo.memo}"></span></p>
-    <p><strong>Start Date:</strong> <span th:text="${#dates.format(eventVo.start_date, 'yyyy-MM-dd HH:mm')}"></span></p>
-    <p><strong>End Date:</strong> <span th:text="${#dates.format(eventVo.end_date, 'yyyy-MM-dd HH:mm')}"></span></p>
+    <p><strong>Start Date:</strong> <span th:text="${eventVo.start_date}"></span></p>
+    <p><strong>End Date:</strong> <span th:text="${eventVo.end_date}"></span></p>
 </div>
-<a th:href="@{/event/update.do/{event_id}/{member_id}(event_id=${eventVo.event_id}, member_id=${eventVo.member_id})}">Edit Event</a>
-<a th:href="@{/event/list.do}">Back to Event List</a>
+<div>
+    <a th:href="@{/event/update.do/{event_id}/{member_id}(event_id=${eventVo.event_id}, member_id=${eventVo.member_id})}">Edit</a>
+    <form th:action="@{/event/delete.do/{event_id}/{member_id}(event_id=${eventVo.event_id}, member_id=${eventVo.member_id})}" method="post" style="display:inline;">
+        <button type="submit">Delete</button>
+    </form>
+</div>
+<a href="/event/list.do">Back to Event List</a>
 </body>
 </html>

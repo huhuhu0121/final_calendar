@@ -1,38 +1,68 @@
-<!-- 리스트는 마이페이지 같은 곳에서 전체로 볼 수 있게 -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout.html}">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Event List</title>
+    <!-- 타이틀(브라우저 탭부분) -->
+    <meta charset="utf-8" />
+    <title layout:fragment="title">게시물 목록</title>
 </head>
-<body>
-<h1>Event List</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Event ID</th>
-        <th>Title</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="event : ${eventList}">
-        <td th:text="${event.event_id}"></td>
-        <td th:text="${event.title}"></td>
-        <td th:text="${#dates.format(event.start_date, 'yyyy-MM-dd HH:mm')}"></td>
-        <td th:text="${#dates.format(event.end_date, 'yyyy-MM-dd HH:mm')}"></td>
-        <td>
-            <a th:href="@{/event/detail.do/{event_id}/{member_id}(event_id=${event.event_id}, member_id=${event.member_id})}">View</a>
-            <a th:href="@{/event/update.do/{event_id}/{member_id}(event_id=${event.event_id}, member_id=${event.member_id})}">Edit</a>
-            <form th:action="@{/event/delete.do/{event_id}/{member_id}(event_id=${event.event_id}, member_id=${event.member_id})}" method="post" style="display:inline;">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a th:href="@{/event/create.do}">Create New Event</a>
-</body>
+
+<!-- boardList 만의 고유 컨텐트 부분 -->
+<div layout:fragment="content">
+    <div class="container">
+        <!-- 게시물 목록 타이틀 -->
+        <h3 layout:fragment="body-title">게시물 내용</h3>
+        <div class="mt-5">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">일정 제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">일정 시작 날짜</th>
+                    <th scope="col">일정 종료 날짜</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="eventVo : ${eventList}">
+                    <td th:text="${eventVo.event_id}"></td>
+                    <td>
+                        <a th:href="@{/event/detail.do/{event_id}(event_id=${eventVo.event_id})}" th:text="${eventVo.title}"></a>
+                    </td>
+                    <td th:text="${eventVo.title}"></td>
+                    <td th:text="${eventVo.member_Id}"></td>
+                    <td th:text="${#dates.format(eventVo.start_date, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#dates.format(eventVo.end_date, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="button-container">
+                <button id="homeButton" type="button" class="btn btn-primary">홈으로</button>
+                <button id="newPostButton" type="button" class="btn btn-success">새 게시물</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 부트스트랩 JS 및 jQuery 추가 -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script layout:fragment="script" th:inline="javascript">
+    var boardList = /*[[ ${boardList ?: 'null'} ]]*/ null;  // 엘비스 연산자
+    console.log("boardList:", boardList); // 자바스크립트 최상위 레벨에서 출력
+
+    $(document).ready(function() {
+        $("#homeButton").click(function() {
+            window.location.href = /*[[@{/event/list.do}]]*/ 'placeholder';
+        });
+
+        $("#newPostButton").click(function() {
+            window.location.href = /*[[@{/event/create.do}]]*/ 'placeholder';
+        });
+    });
+</script>
 </html>

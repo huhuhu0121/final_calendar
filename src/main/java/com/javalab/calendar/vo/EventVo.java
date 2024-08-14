@@ -41,4 +41,7 @@ public class EventVo implements Serializable {
     private String memo;        // 일정 메모
     private int all_day;        // 시간대 설정
     private int publice;        // 공개여부 1이면 공개, 0이면 비공개
+
+    public void setMemberId(int memberId) {
+    }
 }
