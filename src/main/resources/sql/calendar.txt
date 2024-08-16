@@ -14,7 +14,7 @@ CREATE TABLE EVENT (    -- 일정
 	publice INT NOT NULL
 );
 
-CREATE TABLE member (   -- 회원(사용자)
+CREATE TABLE member (   -- 회원(사용자)  -하이
 	MEMBER_ID INT NOT NULL,
 	code_ID INT NULL,
 	EMAIL VARCHAR(200) NOT NULL,
