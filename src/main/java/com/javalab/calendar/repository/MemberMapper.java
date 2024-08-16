@@ -19,7 +19,7 @@ public interface MemberMapper {
     MemberVo findById(@Param("member_id") int member_id);
 
     // 소셜 로그인 정보를 통해 회원 정보 조회
-    MemberVo findMemberById(@Param("member_Id") int member_Id);
+    MemberVo findMemberById(@Param("email") String email);
 
     // 모든 회원 정보 조회
     List<MemberVo> findAllMembers();

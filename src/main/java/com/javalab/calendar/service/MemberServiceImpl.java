@@ -27,7 +27,7 @@ public class MemberServiceImpl implements MemberService {
      * @param memberFormDto
      */
     @Override
-    public void saveMember(MemberFormDto memberFormDto) {
+    public void saveMember(MemberVo memberFormDto) {
         // modelMapper를 이용해서 DTO를 VO로 쉽게 변환
         MemberVo memberVo = modelMapper.map(memberFormDto, MemberVo.class);
         // 회원 저장
@@ -79,8 +79,8 @@ public class MemberServiceImpl implements MemberService {
 
     // 이메일로 회원 찾기
     @Override
-    public MemberVo findMemberById(int member_Id) {
-        return memberMapper.findMemberById(member_Id);
+    public MemberVo findMemberById(String email) {
+        return memberMapper.findMemberById(email);
     }
 
     @Override
