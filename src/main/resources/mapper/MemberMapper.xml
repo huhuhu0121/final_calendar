@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javalab.calendar.repository.MemberMapper">
+
+    <!-- Member ResultMap -->
+    <resultMap id="memberMap" type="com.javalab.calendar.vo.MemberVo">
+        <id property="member_id" column="member_id"/>
+        <result property="code_id" column="code_id"/>
+        <result property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="birth" column="birth"/>
+    </resultMap>
+
+    <!-- 회원 아이디를 통해 회원 정보 조회 -->
+    <select id="findMemberById" parameterType="String" resultMap="memberMap">
+        SELECT member_id,
+        code_id,
+        email,
+        name,
+        gender,
+        birth,
+        image
+        FROM member
+        WHERE email = #{email}
+    </select>
+
+    <!-- 소셜로그인시 이메일을 통해 회원 정보 조회 -->
+    <select id="login" parameterType="string" resultMap="memberMap">
+        SELECT
+        member_id,
+        code_id,
+        email,
+        name,
+        gender,
+        birth,
+        image,
+        bio
+        FROM member
+        WHERE email = #{email}
+    </select>
+
+    <!-- 모든 회원 정보 조회 -->
+    <select id="findAllMembers" resultMap="memberMap">
+        SELECT
+        member_id,
+        code_id,
+        email,
+        name,
+        gender,
+        birth,
+        image,
+        bio
+        FROM member
+    </select>
+
+    <!-- 새로운 회원 저장 -->
+    <insert id="save" parameterType="MemberVo">
+        INSERT INTO member (member_id, password, name, email, birth, image, bio, code_id)
+        VALUES (seq_member_id.nextval, #{password}, #{name}, #{email}, #{birth}, #{image}, #{bio}, seq_code_id.nextval)
+    </insert>
+
+    <!-- 회원 정보 업데이트 -->
+    <update id="update" parameterType="MemberVo">
+        UPDATE member
+        SET
+        password = #{password},
+        name = #{name},
+        birth = #{birth},
+        image = #{image},
+        bio = #{bio}
+        WHERE member_id = #{memberId}
+    </update>
+
+    <!-- 회원 삭제 -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM member WHERE member_id = #{member_Id}
+    </delete>
+
+    <!-- 비밀번호 및 소셜 로그인 상태 수정 -->
+    <update id="modifyPasswordAndSocialStatus">
+        UPDATE member
+        SET
+        password = #{encodedPassword},
+        social = 0
+        WHERE email = #{email}
+    </update>
+
+</mapper>

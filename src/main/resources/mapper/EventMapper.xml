@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javalab.calendar.repository.EventMapper">
+
+    <!-- 모든 이벤트 조회 -->
+    <select id="listEvent" resultType="EventVo">
+        SELECT
+            event_id,
+            member_id,
+            title,
+            category_id,
+            memo,
+            start_date,
+            end_date
+        FROM event
+    </select>
+
+    <!-- 특정 이벤트 조회 -->
+    <select id="getEvent" resultType="EventVo">
+        SELECT
+            event_id,
+            member_id,
+            title,
+            category_id,
+            memo,
+            start_date,
+            end_date
+        FROM event
+        WHERE event_id = #{event_id}
+    </select>
+
+    <!-- 이벤트 등록 메소드 -->
+    <insert id="createEvent" parameterType="EventVo">
+        INSERT INTO event (
+            event_id,
+            title,
+            category_id,
+            memo,
+            start_date,
+            end_date)
+        VALUES (
+            seq_event_id.nextval,
+            #{title},
+            #{category_id},
+            #{memo},
+            #{start_date},
+            #{end_date})
+    </insert>
+
+    <!-- 게시물 등록 메소드 (selectKey 사용) -->
+    <insert id="createEventSelectKey" parameterType="EventVo">
+
+        <!-- selectKey를 사용하여 시퀀스 값 가져오기 -->
+        <selectKey keyProperty="event_id" resultType="int" order="BEFORE">
+            select seq_event_id.nextval from dual
+        </selectKey>
+        INSERT INTO event (
+            event_id,
+            title,
+            category_id,
+            memo,
+            start_date,
+            end_date)
+        VALUES (
+            #{event_id},
+            #{title},
+            #{category_id},
+            #{memo},
+            #{start_date},
+            #{end_date}
+            )
+    </insert>
+
+    <!-- 이벤트 수정 -->
+    <update id="updateEvent" parameterType="EventVo">
+        UPDATE event
+        SET
+        title = #{title},
+        category_id = #{category_id},
+        memo = #{memo},
+        start_date = #{start_date},
+        end_date = #{end_date}
+        WHERE event_id = #{event_id}
+    </update>
+
+    <!-- 이벤트 삭제 -->
+    <delete id="deleteEvent" parameterType="int">
+        DELETE FROM event
+        WHERE event_id = #{event_id}
+    </delete>
+
+</mapper>

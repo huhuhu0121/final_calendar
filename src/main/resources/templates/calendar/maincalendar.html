@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>FullCalendar with Spring Boot</title>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
     <style>
         /* 캘린더 크기 조정 */
         #calendar {
@@ -81,86 +81,91 @@
     </script>
 </head>
 <body>
-<!-- 상단에 로그인 버튼 추가 -->
-<nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="index.html">Calendar</a>
-    <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="modal" data-target="#loginModal"><a href="login.html">로그인</a></button>
-</nav>
+<form action="/maincalendar" method="post">
+    <!-- 상단에 로그인 버튼 추가 -->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">Calendar</a>
+        <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="modal" data-target="#loginModal"><a
+                href="login.html">로그인</a></button>
+    </nav>
 
-<div id="calendar"></div>
+    <div id="calendar"></div>
 
-<!-- 이벤트 추가 모달 -->
-<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">일정 추가</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="eventForm">
-                    <div class="form-group">
-                        <label for="eventTitle">일정 제목</label>
-                        <input type="text" class="form-control" id="eventTitle" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="eventstartDate">시작 날짜</label>
-                        <input type="date" class="form-control" id="eventstartDate" required>
-                        <label for="eventendDate">종료 날짜</label>
-                        <input type="date" class="form-control" id="eventendDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="eventcontent">일정 내용</label>
-                        <input type="text" class="form-control" id="eventcontent" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="eventmember">참석자</label>
-                        <input type="text" class="form-control" id="eventmember" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="eventlocation">장소</label>
-                        <input type="text" class="form-control" id="eventlocation" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" onclick="addEvent()">추가</button>
+    <!-- 이벤트 추가 모달 -->
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">일정 추가</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="eventForm">
+                        <div class="form-group">
+                            <label for="eventTitle">일정 제목</label>
+                            <input type="text" class="form-control" id="eventTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventstartDate">시작 날짜</label>
+                            <input type="date" class="form-control" id="eventstartDate" required>
+                            <label for="eventendDate">종료 날짜</label>
+                            <input type="date" class="form-control" id="eventendDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventcontent">일정 내용</label>
+                            <input type="text" class="form-control" id="eventcontent" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventmember">참석자</label>
+                            <input type="text" class="form-control" id="eventmember" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventlocation">장소</label>
+                            <input type="text" class="form-control" id="eventlocation" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" onclick="addEvent()">추가</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- 로그인 모달 -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 href="/login" class="modal-title" id="loginModalLabel">로그인</h5> <!-- 로그인 페이지로 이동 -->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="loginUsername">사용자명</label>
-                        <input type="text" class="form-control" id="loginUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">비밀번호</label>
-                        <input type="password" class="form-control" id="loginPassword" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" onclick="login()">로그인</button>
+    <!-- 로그인 모달 -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 href="/login" class="modal-title" id="loginModalLabel">로그인</h5> <!-- 로그인 페이지로 이동 -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginUsername">사용자명</label>
+                            <input type="text" class="form-control" id="loginUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">비밀번호</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" onclick="login()">로그인</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 </body>
 </html>

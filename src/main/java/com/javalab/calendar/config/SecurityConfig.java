@@ -18,7 +18,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()  // 그 외 모든 요청은 인증 필요
                 )
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/login2")  // 커스텀 로그인 페이지 설정
+                        .loginPage("/login")  // 커스텀 로그인 페이지 설정
                         .permitAll()  // 로그인 페이지는 인증 없이 접근 허용
                 )
                 .logout(logout -> logout
