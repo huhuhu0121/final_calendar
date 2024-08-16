@@ -79,8 +79,8 @@ public class MemberServiceImpl implements MemberService {
 
     // 이메일로 회원 찾기
     @Override
-    public MemberVo findMemberById(String email) {
-        return memberMapper.findMemberById(email);
+    public MemberVo findMemberById(int member_Id) {
+        return memberMapper.findMemberById(member_Id);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void deleteMember(String email) {
-        memberMapper.delete(email);
+    public void deleteMember(int member_Id) {
+        memberMapper.delete(member_Id);
     }
 }

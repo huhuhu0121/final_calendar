@@ -8,16 +8,16 @@
     <!-- Member ResultMap -->
     <resultMap id="memberMap" type="com.javalab.calendar.vo.MemberVo">
         <id property="member_id" column="member_id"/>
-        <result property="password" column="password"/>
-        <result property="name" column="name"/>
+        <result property="code_id" column="code_id"/>
         <result property="email" column="email"/>
-        <result property="point" column="point"/>
-        <result property="del" column="del"/>
-        <result property="social" column="social"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="birth" column="birth"/>
     </resultMap>
 
     <!-- 회원 아이디를 통해 회원 정보 조회 -->
-    <select id="findMemberById" parameterType="int" resultMap="memberMap">
+    <select id="findMemberById" parameterType="String" resultMap="memberMap">
         SELECT member_id,
         code_id,
         email,
@@ -26,68 +26,59 @@
         birth,
         image
         FROM member
-        WHERE member_id = #{member_id}
+        WHERE email = #{email}
     </select>
 
     <!-- 소셜로그인시 이메일을 통해 회원 정보 조회 -->
     <select id="login" parameterType="string" resultMap="memberMap">
-        SELECT m.member_id,
-        m.password,
-        m.name,
-        m.email,
-        m.point,
-        m.del,
-        m.social,
+        SELECT
+        member_id,
+        code_id,
+        email,
+        name,
+        gender,
+        birth,
+        image,
+        bio
         FROM member
-        LEFT JOIN member_role mr ON m.member_id = mr.member_id
-        LEFT JOIN role ro ON mr.role_id = ro.role_id
         WHERE email = #{email}
     </select>
 
     <!-- 모든 회원 정보 조회 -->
     <select id="findAllMembers" resultMap="memberMap">
-        SELECT m.member_id,
-        m.password,
-        m.name,
-        m.email,
-        m.point,
-        m.del,
-        m.social,
-        ro.role_id,
-        ro.role_name
-        FROM member m
-        LEFT JOIN member_role mr ON m.member_id = mr.member_id
-        LEFT JOIN role ro ON mr.role_id = ro.role_id
+        SELECT
+        member_id,
+        code_id,
+        email,
+        name,
+        gender,
+        birth,
+        image,
+        bio
+        FROM member
     </select>
 
     <!-- 새로운 회원 저장 -->
-    <insert id="save" parameterType="com.javalab.board.vo.MemberVo">
-        INSERT INTO member (member_id, password, name, email, point, del, social)
-        VALUES (#{memberId}, #{password}, #{name}, #{email}, #{point}, #{del}, #{social})
-    </insert>
-
-    <!-- 회원의 역할 저장 -->
-    <insert id="saveRole">
-        INSERT INTO member_role (member_id, role_id)
-        VALUES (#{memberId}, #{roleId})
+    <insert id="save" parameterType="MemberVo">
+        INSERT INTO member (member_id, password, name, email, birth, image, bio, code_id)
+        VALUES (seq_member_id.nextval, #{password}, #{name}, #{email}, #{birth}, #{image}, #{bio}, seq_code_id.nextval)
     </insert>
 
     <!-- 회원 정보 업데이트 -->
-    <update id="update" parameterType="com.javalab.board.vo.MemberVo">
+    <update id="update" parameterType="MemberVo">
         UPDATE member
         SET
         password = #{password},
         name = #{name},
-        email = #{email},
-        point = #{point},
-        del = #{del},
-        social = #{social}
+        birth = #{birth},
+        image = #{image},
+        bio = #{bio}
         WHERE member_id = #{memberId}
     </update>
 
     <!-- 회원 삭제 -->
-    <delete id="delete" parameterType="string">
-        DELETE FROM member WHERE member_id = #{memberId}
+    <delete id="delete" parameterType="int">
+        DELETE FROM member WHERE member_id = #{member_Id}
     </delete>
 
     <!-- 비밀번호 및 소셜 로그인 상태 수정 -->

@@ -19,7 +19,7 @@ public interface MemberMapper {
     MemberVo findById(@Param("member_id") int member_id);
 
     // 소셜 로그인 정보를 통해 회원 정보 조회
-    MemberVo findMemberById(@Param("email") String email);
+    MemberVo findMemberById(@Param("member_Id") int member_Id);
 
     // 모든 회원 정보 조회
     List<MemberVo> findAllMembers();
@@ -28,7 +28,7 @@ public interface MemberMapper {
     void update(MemberVo member);
 
     // 회원 삭제
-    void delete(@Param("email") String email);
+    void delete(@Param("member_Id") int member_Id);
 
     // 비밀번호 및 소셜 로그인 상태 수정
     void modifyPasswordAndSocialStatus(@Param("email") String email, @Param("encodedPassword") String encodedPassword);

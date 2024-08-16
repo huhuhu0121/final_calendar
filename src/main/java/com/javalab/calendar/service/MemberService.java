@@ -19,12 +19,12 @@ public interface MemberService {
     // 소셜 로그인 회원 저장 및 권한 저장
     void saveMemberWithRole(MemberVo member);
 
-    MemberVo findMemberById(String email);
+    MemberVo findMemberById(int member_Id);
 
     List<MemberVo> findAllMembers();
 
     void updateMember(MemberFormDto memberFormDto);
 
-    void deleteMember(String email);
+    void deleteMember(int member_Id);
 }
 
