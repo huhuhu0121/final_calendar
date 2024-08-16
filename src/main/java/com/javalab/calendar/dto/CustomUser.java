@@ -2,34 +2,52 @@ package com.javalab.calendar.dto;
 
 import com.javalab.calendar.vo.MemberVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 @Slf4j
 public class CustomUser extends User implements OAuth2User, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private MemberVo memberVo;  // 일반 시큐리티 로그인
+    private MemberVo memberVo;  // 일반시큐리티 로그인
     private Map<String, Object> attributes; // 소셜 로그인 정보
 
-    // 일반 시큐리티 로그인 사용자 생성자
-    public CustomUser(MemberVo memberVo) {
-        // 부모 클래스(User) 생성자를 호출
-        super(String.valueOf(memberVo.getMember_Id()), memberVo.getPassword(), null); // 권한 정보 없이 설정
+    public CustomUser(String name, String password,
+                      Collection<? extends GrantedAuthority> authorities) {
+        super(name, password, authorities);
 
-        log.info("CustomUser 생성자 호출 - 일반 로그인");
+        log.info("MemberDto 생성자 호출 -1 ");
+    }
+
+    // 일반 시큐리티 사용
+    public CustomUser(MemberVo memberVo) {
+        super(memberVo.getMemberId(),
+                memberVo.getPassword(),
+                memberVo.getRoles().stream()
+                        .map(g -> new SimpleGrantedAuthority(g.getRoleName()))
+                        .collect(Collectors.toList()));
+
+        log.info("MemberDto 생성자 호출 - 2");
 
         this.memberVo = memberVo;
     }
 
-    // 소셜 로그인 사용자용 생성자, 파라미터로 attributes 추가됨
-    public CustomUser(MemberVo memberVo, Map<String, Object> attributes) {
-        // 부모 클래스(User) 생성자를 호출
-        super(String.valueOf(memberVo.getMember_Id()), memberVo.getPassword(), null); // 권한 정보 없이 설정
+    // 소셜 로그인 사용자용 생성자, 파라미터로 attributes 추가됨.
+    public CustomUser(MemberVo memberVo,
+                      Map<String, Object> attributes) {
+
+        super(memberVo.getMemberId(),
+                memberVo.getPassword(),
+                memberVo.getRoles().stream()
+                        .map(g -> new SimpleGrantedAuthority(g.getRoleName()))
+                        .collect(Collectors.toList()));
 
         log.info("CustomUser 생성자 호출 - 소셜 로그인");
 
@@ -39,11 +57,9 @@ public class CustomUser extends User implements OAuth2User, Serializable {
 
     @Override
     public String getUsername() {
-        // member_id는 int이므로 String으로 변환하여 반환
-        return String.valueOf(this.memberVo.getMember_Id());
+        return this.memberVo.getMemberId(); // 여기서 memberId를 반환
     }
 
-    @Override
     public String getPassword() {
         return this.memberVo.getPassword();
     }
@@ -56,8 +72,13 @@ public class CustomUser extends User implements OAuth2User, Serializable {
         return this.memberVo.getEmail();
     }
 
+    public boolean isSocial() {
+        return this.memberVo.getSocial() == 1;
+    }
+
     @Override
     public Map<String, Object> getAttributes() {
         return this.attributes;
     }
+
 }

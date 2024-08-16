@@ -2,7 +2,9 @@ package com.javalab.calendar.service;
 
 import com.javalab.calendar.dto.MemberFormDto;
 import com.javalab.calendar.repository.MemberMapper;
+import com.javalab.calendar.service.MemberService;
 import com.javalab.calendar.vo.MemberVo;
+import com.javalab.calendar.vo.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -27,11 +29,13 @@ public class MemberServiceImpl implements MemberService {
      * @param memberFormDto
      */
     @Override
-    public void saveMember(MemberVo memberFormDto) {
+    public void saveMember(MemberFormDto memberFormDto) {
         // modelMapper를 이용해서 DTO를 VO로 쉽게 변환
         MemberVo memberVo = modelMapper.map(memberFormDto, MemberVo.class);
         // 회원 저장
         memberMapper.save(memberVo);
+        // 회원 역할 저장
+        memberMapper.saveRole(memberVo.getMemberId(), 1); // 권한은 1, ROLE_USER 하드코딩
     }
 
 
@@ -60,11 +64,11 @@ public class MemberServiceImpl implements MemberService {
         // 사용자 저장
         memberMapper.save(member);
 
-//        // 회원의 역할 저장
-//        if (!member.getRoles().isEmpty()) {
-//            Role role = member.getRoles().get(0);  // 첫 번째 역할만 저장
-//            memberMapper.saveRole(member.getMemberId(), role.getRoleId());
-//        }
+        // 회원의 역할 저장
+        if (!member.getRoles().isEmpty()) {
+            Role role = member.getRoles().get(0);  // 첫 번째 역할만 저장
+            memberMapper.saveRole(member.getMemberId(), role.getRoleId());
+        }
     }
 
     /**
@@ -77,10 +81,9 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.login(email);
     }
 
-    // 이메일로 회원 찾기
     @Override
-    public MemberVo findMemberById(String email) {
-        return memberMapper.findMemberById(email);
+    public MemberVo findMemberById(String memberId) {
+        return memberMapper.findMemberById(memberId);
     }
 
     @Override
@@ -96,7 +99,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void deleteMember(int member_Id) {
-        memberMapper.delete(member_Id);
+    public void deleteMember(String memberId) {
+        memberMapper.delete(memberId);
     }
 }

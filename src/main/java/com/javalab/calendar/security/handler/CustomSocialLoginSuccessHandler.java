@@ -22,29 +22,28 @@ public class CustomSocialLoginSuccessHandler implements AuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication)
-            throws IOException, ServletException {
+                                        throws IOException, ServletException {
 
         log.info("----------------------------------------------------------");
-        log.info("CustomSocialLoginSuccessHandler onAuthenticationSuccess...");
+        log.info("여기는 CustomSocialLoginSuccessHandler onAuthenticationSuccess ..........");
         log.info(authentication.getPrincipal());
 
-        // CustomUser로 캐스팅
-        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        // 시큐리티에 보관한 정보 추출
+        //SocialMemberDto socialMember = (SocialMemberDto) authentication.getPrincipal();
+        CustomUser socialMember = (CustomUser) authentication.getPrincipal();
 
-        // 로그 출력
-        log.info("customUser.getUsername(): " + customUser.getUsername());
+        log.info("socialMember.isSocial() : " + socialMember.isSocial());
+        boolean boolPass = passwordEncoder.matches("1111", socialMember.getPassword());
+        log.info("passwordEncoder.matches(1111) 맞나? : " + boolPass);
 
-        // 비밀번호가 "1111"인지 확인 (소셜 로그인 여부를 간접적으로 확인)
-        boolean isDefaultPassword = passwordEncoder.matches("1111", customUser.getPassword());
-        log.info("Password matches '1111': " + isDefaultPassword);
-
-        // 비밀번호가 "1111"이라면, 사용자 정보를 수정하는 페이지로 리다이렉트
-        if (isDefaultPassword) {
-            log.info("Redirecting to member modification page...");
+        // 비밀번호가 1111이라는 얘기는 소셜로그인 했으며 아직 바꿨다는 의미
+        if (socialMember.isSocial() && (socialMember.getPassword().equals("1111")
+                || passwordEncoder.matches("1111", socialMember.getPassword()))) {
+            log.info("회원정보 수정화면으로 이동합니다. ");
             response.sendRedirect("/member/modify.do");
-        } else {
-            // 그렇지 않다면 기본 페이지로 리다이렉트
-            log.info("Redirecting to home page...");
+            return;
+        } else {    // 비밀번호가 1111이 아니라는 얘기는 바꿨다는 의미
+            log.info("비밀번호가 1111이 아니므로 초기 화면으로 이동합니다.");
             response.sendRedirect("/");
         }
     }

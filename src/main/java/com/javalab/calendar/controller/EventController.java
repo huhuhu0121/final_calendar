@@ -1,6 +1,5 @@
 package com.javalab.calendar.controller;
 
-import com.javalab.calendar.dto.EventDto;
 import com.javalab.calendar.service.EventService;
 import com.javalab.calendar.vo.EventVo;
 import com.javalab.calendar.vo.MemberVo;
@@ -35,12 +34,11 @@ public class EventController {
      * @param model
      * @return
      */
-    @GetMapping("/detail.do/{event_id}/{member_id}")
+    @GetMapping("/detail.do/{event_id}")
     public String detail(@PathVariable("event_id") int event_id,
-                         @PathVariable("member_id") int member_id,
                          Model model) {
         Optional<EventVo> optionalEventVo = eventList.stream()
-                .filter(calendar -> calendar.getEvent_id() == event_id && calendar.getMember_id() == member_id)
+                .filter(calendar -> calendar.getEvent_id() == event_id)
                 .findFirst();
 
         if (optionalEventVo.isPresent()) {

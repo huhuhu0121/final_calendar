@@ -28,7 +28,7 @@ public class EventVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int event_id;			// 일정번호 - 캘린더에서 불러올때는 일정 ID 받아서
-    private int member_id;        // 회원번호
+    private String memberId;        // 회원번호
     private int category_id;    // 카테고리번호
     private int routine_id;     // 루틴번호
     private String title;       // 일정 제목
@@ -42,6 +42,6 @@ public class EventVo implements Serializable {
     private int all_day;        // 시간대 설정
     private int publice;        // 공개여부 1이면 공개, 0이면 비공개
 
-    public void setMemberId(int memberId) {
+    public void setMemberId(String memberId) {
     }
 }

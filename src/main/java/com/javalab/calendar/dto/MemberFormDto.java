@@ -23,6 +23,9 @@ import java.util.Date;
 @Builder
 public class MemberFormDto {
 
+    @Size(min = 4, max = 20, message = "회원 ID는 4자 이상 20자 이내로 입력하세요.")
+    private String memberId;
+
     @NotBlank(message = "이메일은 필수 입력입니다.")
     @Email(message = "유효한 이메일 주소를 입력하세요.")
     private String email;

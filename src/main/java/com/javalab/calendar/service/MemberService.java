@@ -8,7 +8,7 @@ import java.util.List;
 public interface MemberService {
 
     // 일반적인 회원 저장
-    void saveMember(MemberVo memberFormDto);
+    void saveMember(MemberFormDto memberFormDto);
 
     // 소셜로그인 비밀번호 및 상태 수정
     void modifyPasswordAndSocialStatus(String email, String encodedPassword);
@@ -19,12 +19,12 @@ public interface MemberService {
     // 소셜 로그인 회원 저장 및 권한 저장
     void saveMemberWithRole(MemberVo member);
 
-    MemberVo findMemberById(String email);
+    MemberVo findMemberById(String memberId);
 
     List<MemberVo> findAllMembers();
 
     void updateMember(MemberFormDto memberFormDto);
 
-    void deleteMember(int member_Id);
+    void deleteMember(String memberId);
 }
 

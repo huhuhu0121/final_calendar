@@ -21,12 +21,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     // 실제 인증 진행(DB에 회원 ID로 사용자 정보 조회)
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
 
-        MemberVo memberVo = memberMapper.findMemberById(email);
+        MemberVo memberVo = memberMapper.findMemberById(memberId);
 
         if (memberVo == null) {
-            throw new UsernameNotFoundException(email);
+            throw new UsernameNotFoundException(memberId);
         }
         return new CustomUser(memberVo);
     }

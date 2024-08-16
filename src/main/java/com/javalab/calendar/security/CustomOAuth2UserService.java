@@ -3,8 +3,10 @@ package com.javalab.calendar.security;
 import com.javalab.calendar.dto.CustomUser;
 import com.javalab.calendar.service.MemberService;
 import com.javalab.calendar.vo.MemberVo;
+import com.javalab.calendar.vo.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -12,8 +14,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -24,12 +26,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("userRequest: {}", userRequest);
+        log.info("userRequest....{}", userRequest);
 
         ClientRegistration clientRegistration = userRequest.getClientRegistration();
         String clientName = clientRegistration.getClientName();
 
-        log.info("clientName: {}", clientName);
+        log.info("clientName {} ", clientName);
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
@@ -38,50 +40,84 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String email = null;
         String name = null;
 
-        if ("kakao".equals(clientName)) {
-            email = getKakaoEmail(paramMap);
-            name = getKakaoNickname(paramMap);
+        switch (clientName) {
+            case "kakao":
+                email = getKakaoEmail(paramMap);
+                name = getKakaoNickname(paramMap);
+                break;
         }
 
-        log.info("=================================");
-        log.info("카카오에서 받아온 이메일: {}", email);
-        log.info("카카오에서 받아온 닉네임: {}", name);
-        log.info("=================================");
+        log.info("===============================");
+        log.info("카카오에서 받아온 이메일 : " + email);
+        log.info("===============================");
 
-        // 이메일을 통해 기존 회원 여부 확인
-        MemberVo memberVo = memberService.findMemberByEmail(email);
+        OAuth2User oAuth2UserDto = generateDTO(email, name, paramMap);
 
-        if (memberVo == null) {
-            // 기존 회원이 없는 경우, 새 회원 생성
-            memberVo = createNewMember(email, name);
-            memberService.saveMember(memberVo);
+        return oAuth2UserDto;
+    }
+
+    private OAuth2User generateDTO(String email, String name, Map<String, Object> params) {
+
+        MemberVo result = memberService.findMemberByEmail(email);
+
+        if (result == null) {
+            log.info("소셜로그인 사용자가 디비에 존재하지 않습니다.");
+
+            // UUID를 사용하여 고유한 memberId 생성
+            String uuidMemberId = UUID.randomUUID().toString();
+            String encodedPassword = passwordEncoder.encode("1111");
+
+            // 새로운 사용자 생성 및 기본 역할 설정
+            Role role = new Role();
+            role.setRoleId(1);  // role_id를 1로 설정 (ROLE_USER)
+            role.setRoleName("ROLE_USER");
+            List<Role> roles = Collections.singletonList(role);
+
+            MemberVo member = MemberVo.builder()
+                    .memberId(uuidMemberId)
+                    .password(encodedPassword)
+                    .name(name != null ? name : "social user")
+                    .email(email)
+                    .social(1)
+                    .roles(roles)
+                    .attributes(params)
+                    .build();
+
+            memberService.saveMemberWithRole(member);
+
+            log.info("CustomOAuth2UserService 저장 완료후 member....{}", member);
+
+            List<SimpleGrantedAuthority> authorities = roles.stream()
+                    .map(r -> new SimpleGrantedAuthority(r.getRoleName()))
+                    .collect(Collectors.toList());
+
+            log.info("member.getRoles() {}", member.getRoles());
+
+
+            return new CustomUser(member, params);
+
+        } else {
+
+            log.info("소셜로그인 사용자가 디비에 이미 존재합니다. {}", result);
+
+            log.info("result.getRoles() {}", result.getRoles());
+
+            return new CustomUser(result,  params);
         }
-
-        return new CustomUser(memberVo, paramMap);
     }
 
     private String getKakaoEmail(Map<String, Object> paramMap) {
         log.info("KAKAO-----------------------------------------");
-        LinkedHashMap accountMap = (LinkedHashMap) paramMap.get("kakao_account");
+        Object value = paramMap.get("kakao_account");
+        log.info(value);
+        LinkedHashMap accountMap = (LinkedHashMap) value;
         String email = (String) accountMap.get("email");
-        log.info("email: {}", email);
+        log.info("email..." + email);
         return email;
     }
 
     private String getKakaoNickname(Map<String, Object> paramMap) {
         LinkedHashMap propertiesMap = (LinkedHashMap) paramMap.get("properties");
         return (String) propertiesMap.get("nickname");
-    }
-
-    private MemberVo createNewMember(String email, String name) {
-        MemberVo memberVo = new MemberVo();
-        memberVo.setEmail(email);
-        memberVo.setName(name);
-        memberVo.setPassword(passwordEncoder.encode("default_password")); // 임시 비밀번호 설정
-
-        // member_id와 같은 다른 필드가 필요한 경우 초기화
-        // memberVo.setMember_Id(...);
-
-        return memberVo;
     }
 }
