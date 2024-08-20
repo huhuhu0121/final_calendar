@@ -4,8 +4,36 @@
       layout:decorate="~{layout/layout.html}">
 
 <head>
-    <meta charset="utf-8" />
     <title layout:fragment="title">회원 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+        .table thead th {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 
 <div layout:fragment="content">
@@ -14,21 +42,28 @@
         <table class="table table-hover">
             <thead>
             <tr>
+                <th>프로필사진</th>
                 <th>아이디</th>
                 <th>이름</th>
                 <th>이메일</th>
-                <th>포인트</th>
-                <th>권한</th>
+                <th>친구코드</th>
+                <th>성별</th>
+                <th>자기소개</th>
+                <th>생년월일</th>
                 <th>수정</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="member : ${memberList}">
+                <!-- 프로필사진은 이미지로 받아오게끔 -->
+                <td th:text="${member.memberId}">프로필사진</td>
                 <td th:text="${member.memberId}">아이디</td>
                 <td th:text="${member.name}">이름</td>
                 <td th:text="${member.email}">이메일</td>
-                <td th:text="${member.point}">포인트</td>
-                <td th:text="${member.roles}">권한</td>
+                <td th:text="${member.code_id}">친구코드</td>
+                <td th:text="${member.gender}">성별</td>
+                <td th:text="${member.bio}">자기소개</td>
+                <td th:text="${member.birth}">생년월일</td>
                 <td>
                     <a th:href="@{/member/update.do/{memberId}(memberId=${member.memberId})}" class="btn btn-primary btn-sm">수정</a>
                 </td>
@@ -37,3 +72,10 @@
         </table>
     </div>
 </div>
+
+<!-- Optionally include Bootstrap JavaScript for additional functionality -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</html>

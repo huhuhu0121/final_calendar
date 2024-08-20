@@ -14,10 +14,11 @@
         <result property="password" column="password"/>
         <result property="gender" column="gender"/>
         <result property="birth" column="birth"/>
+        <collection property="roles" ofType="com.javalab.calendar.vo.Role" resultMap="roleResultMap"/>
     </resultMap>
 
     <!-- Role ResultMap -->
-    <resultMap id="roleResultMap" type="com.javalab.calendar.vo.Role">
+    <resultMap id="roleResultMap" type="Role">
         <result property="roleId" column="role_id"/>
         <result property="roleName" column="role_name"/>
     </resultMap>

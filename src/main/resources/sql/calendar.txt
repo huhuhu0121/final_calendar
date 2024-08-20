@@ -176,4 +176,31 @@ ALTER TABLE calender ADD CONSTRAINT FK_EVENT_TO_calender_1 FOREIGN KEY (
 )
 REFERENCES EVENT (
     event_id
-); 
+);
+
+INSERT INTO member (member_id, code_id, email, name, password, gender, birth, image, bio, social)
+VALUES ('java', 1, 'a@a.com', '홍길동', '$2a$10$Sd3oeSdhSqpQFw9Cko0.p.Pt7jmW.54ybTZVBPsHfnGngWGZzyKxu', 'male', sysdate, '안녕', '2', 2);
+commit;
+
+-- member 테이블에 유니크 제약 조건 추가
+ALTER TABLE member
+ADD CONSTRAINT pk_member_id PRIMARY KEY (member_id);
+
+-- role 테이블에 유니크 제약 조건 추가
+ALTER TABLE role
+ADD CONSTRAINT pk_role_id PRIMARY KEY (role_id);
+
+
+CREATE TABLE member_role (
+    member_id VARCHAR2(50),
+    role_id NUMBER,
+    PRIMARY KEY (member_id, role_id),
+    CONSTRAINT fk_member_role_member FOREIGN KEY (member_id) REFERENCES member(member_id),
+    CONSTRAINT fk_member_role_role FOREIGN KEY (role_id) REFERENCES role(role_id)
+);
+
+-- MemberRole 테이블에 사용자 권한 추가
+INSERT INTO member_role (member_id, role_id) VALUES ('java', 1);  -- ROLE_USER
+INSERT INTO member_role (member_id, role_id) VALUES ('davin', 2);  -- ROLE_MANAGER
+
+commit;

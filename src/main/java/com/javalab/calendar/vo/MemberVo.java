@@ -58,8 +58,8 @@ public class MemberVo implements Serializable{
 		this.password = password;
 		this.gender = gender;
 		this.birth = birth;
-		this. image = image;
-		this. bio = bio;
+		this.image = image;
+		this.bio = bio;
 		this.social = social;
 		this.roles = roles;
 		this.attributes = attributes;

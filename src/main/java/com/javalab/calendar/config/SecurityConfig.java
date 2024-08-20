@@ -62,10 +62,10 @@ public class SecurityConfig {
 
         http
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/member/login.do")	// 로그인 페이지(MembmerController 에서 정의한 경로)
-                        .loginProcessingUrl("/member/action.do") // 로그인 처리 URL, form 태그의 action 경로와 일치해야 함. 그래야 시큐리티가 인식하고 로그인 처리를 시작한다.
-                        .successHandler(authSucessHandler)
-                        .failureHandler(authFailureHandler)
+                        .loginPage("/member/login.do")  // 로그인 페이지 설정
+                        .loginProcessingUrl("/member/action.do")  // 로그인 처리 URL
+                        .successHandler(authSucessHandler)  // 로그인 성공 핸들러
+                        .failureHandler(authFailureHandler)  // 로그인 실패 핸들러
                 )
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout.do"))
@@ -74,6 +74,7 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                 )
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/member/login.do","/member/logout.do", "/member/action", "/member/join.do", "/member/modify.do").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/ckeditor2/**", "/vendor/**", "/assets/**").permitAll()
                         .requestMatchers("/member/login.do","/member/logout.do", "/member/action", "/member/join.do/**", "/member/modify.do").permitAll()
                         .requestMatchers( "/board/detail.do/*").hasRole("USER")
