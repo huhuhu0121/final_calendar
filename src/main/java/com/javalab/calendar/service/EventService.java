@@ -1,23 +1,18 @@
 package com.javalab.calendar.service;
 
+import com.javalab.calendar.repository.EventMapper;
 import com.javalab.calendar.vo.EventVo;
-import com.javalab.calendar.vo.MemberVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface EventService {
 
-    public EventVo getEvent(int event_Id);
-
-    // 모든 이벤트 조회
-    public List<EventVo> listEvent();
-
-    // 이벤트 생성
-    public int createEvent(EventVo eventVo);
-
-    // 이벤트 수정
-    public int updateEvent(EventVo eventVo);
-
-    // 이벤트 삭제
-    public int deleteEvent(int event_id);
+    EventVo getEvent(int event_id);
+    List<EventVo> listEvent();
+    int createEvent(EventVo eventVo);
+    int updateEvent(EventVo eventVo);
+    int deleteEvent(int event_id);
 }
