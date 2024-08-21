@@ -43,7 +43,7 @@ public class MemberController {
         if (!model.containsAttribute("memberFormDto")) {
             model.addAttribute("memberFormDto", new MemberFormDto());
         }
-        return "member/join";
+        return "member/memberCreate";
     }
 
     /**

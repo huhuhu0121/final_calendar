@@ -1,39 +1,143 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout.html}">
+      layout:decorate="~{layout/layout.html}"> <!-- 레이아웃 템플릿을 상속받아 사용 -->
 
 <head>
-    <title layout:fragment="title">회원 가입</title>
+    <!-- 페이지 기본 설정 -->
+    <meta charset="utf-8"/>
+    <title layout:fragment="title">회원 가입</title> <!-- 페이지 제목 설정 -->
+
+    <!-- Bootstrap CSS 링크 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- 추가적인 스타일 정의 -->
+    <style>
+        .container {
+            margin-top: 20px; /* 컨테이너 상단 여백 */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 컨테이너 내부 요소들을 가운데 정렬 */
+        }
+        .table thead th {
+            background-color: #f8f9fa; /* 테이블 헤더 배경색 */
+            color: #343a40; /* 테이블 헤더 글자색 */
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* 짝수 행 배경색 */
+        }
+        .table tbody tr:hover {
+            background-color: #e9ecef; /* 행 마우스 오버 시 배경색 */
+        }
+        .btn-primary {
+            background-color: #007bff; /* 기본 버튼 색상 */
+            border-color: #007bff; /* 기본 버튼 테두리 색상 */
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* 버튼 마우스 오버 시 색상 */
+            border-color: #004085; /* 버튼 마우스 오버 시 테두리 색상 */
+        }
+        .profile-img {
+            width: 50px; /* 프로필 이미지 너비 */
+            height: 50px; /* 프로필 이미지 높이 */
+            border-radius: 50%; /* 프로필 이미지 둥글게 */
+        }
+        .form-group {
+            width: 500px; /* 입력 필드의 너비 */
+        }
+        h3 {
+            text-align: center; /* 회원 가입 제목 가운데 정렬 */
+        }
+    </style>
 </head>
 
+<!-- 페이지의 주요 내용 -->
 <div layout:fragment="content">
-    <div class="container">
-        <h3 layout:fragment="body-title">회원 가입</h3>
-        <div class="mt-5">
-            <form th:action="@{/member/join.do}" th:object="${memberFormDto}" method="post">
+    <div class="container"> <!-- 페이지 내용을 담고 있는 컨테이너 -->
+        <h3 layout:fragment="body-title">회원 가입</h3> <!-- 페이지 제목 -->
+
+        <div class="mt-5"> <!-- 가입 폼을 담고 있는 섹션 -->
+            <form th:action="@{/member/join.do}" th:object="${memberFormDto}" method="post"> <!-- 가입 폼 시작 -->
+
+                <!-- 아이디 입력 필드 -->
                 <div class="form-group">
                     <label for="memberId">아이디</label>
-                    <input type="text" id="memberId" th:field="*{memberId}" class="form-control" />
-                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('memberId')}" th:text="${errorMap.get('memberId')}"></small>
+                    <input type="text" id="memberId" th:field="*{memberId}" class="form-control"/>
+                    <!-- 아이디에 대한 에러 메시지 표시 -->
+                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('memberId')}"
+                           th:text="${errorMap.get('memberId')}"></small>
                 </div>
+
+                <!-- 비밀번호 입력 필드 -->
                 <div class="form-group">
                     <label for="password">비밀번호</label>
-                    <input type="password" id="password" th:field="*{password}" class="form-control" />
-                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('password')}" th:text="${errorMap.get('password')}"></small>
+                    <input type="password" id="password" th:field="*{password}" class="form-control"/>
+                    <!-- 비밀번호에 대한 에러 메시지 표시 -->
+                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('password')}"
+                           th:text="${errorMap.get('password')}"></small>
                 </div>
+
+                <!-- 이름 입력 필드 -->
                 <div class="form-group">
                     <label for="name">이름</label>
-                    <input type="text" id="name" th:field="*{name}" class="form-control" />
-                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('name')}" th:text="${errorMap.get('name')}"></small>
+                    <input type="text" id="name" th:field="*{name}" class="form-control"/>
+                    <!-- 이름에 대한 에러 메시지 표시 -->
+                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('name')}"
+                           th:text="${errorMap.get('name')}"></small>
                 </div>
+
+                <!-- 이메일 입력 필드 -->
                 <div class="form-group">
                     <label for="email">이메일</label>
-                    <input type="email" id="email" th:field="*{email}" class="form-control" />
-                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('email')}" th:text="${errorMap.get('email')}"></small>
+                    <input type="email" id="email" th:field="*{email}" class="form-control"/>
+                    <!-- 이메일에 대한 에러 메시지 표시 -->
+                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('email')}"
+                           th:text="${errorMap.get('email')}"></small>
                 </div>
+
+                <!-- 성별 입력 필드 (라디오 버튼) -->
+                <div class="form-group">
+                    <label>성별</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="male" name="gender" th:field="*{gender}"
+                               value="남자"/>
+                        <label class="form-check-label" for="male">남자</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="female" name="gender" th:field="*{gender}"
+                               value="여자"/>
+                        <label class="form-check-label" for="female">여자</label>
+                    </div>
+                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('gender')}"
+                           th:text="${errorMap.get('gender')}"></small>
+                </div>
+
+                <!-- 생년월일 입력 필드 -->
+                <div class="form-group">
+                    <label for="birth">생년월일</label>
+                    <input type="date" id="birth" th:field="*{birth}" class="form-control"/>
+                    <!-- 생년월일에 대한 에러 메시지 표시 -->
+                    <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('birth')}"
+                           th:text="${errorMap.get('birth')}"></small>
+                </div>
+
+                <!-- 프로필 사진 입력 필드 -->
+                <div class="form-group">
+                    <label for="image">프로필 사진</label>
+                    <input type="file" id="image" th:field="*{image}" class="form-control"/>
+                </div>
+
+                <!-- 자기소개 입력 필드 -->
+                <div class="form-group">
+                    <label for="bio">자기소개</label>
+                    <input type="text" id="bio" th:field="*{bio}" class="form-control"/>
+                </div>
+
+                <!-- 가입 버튼 -->
                 <button type="submit" class="btn btn-primary mt-1">가입</button>
-            </form>
+            </form> <!-- 가입 폼 종료 -->
         </div>
     </div>
 </div>
+
+</html>

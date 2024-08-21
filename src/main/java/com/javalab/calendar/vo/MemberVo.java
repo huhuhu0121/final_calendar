@@ -18,7 +18,7 @@ import java.util.Map;
 public class MemberVo implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-	private String memberId;;	// 아이디가 아니고 bno같이 멤버 번호임 nn(not null)
+	private String memberId;;	// 아이디가
 	private int code_id;	// 친구코드 공유 코드 	nn
 	private String email;	// 이메일로 로그인 해서 이게 결국에는 아이디 nn
 	private String name;	// 이름 nn

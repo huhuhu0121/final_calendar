@@ -26,20 +26,20 @@ public class MemberFormDto {
     @Size(min = 4, max = 20, message = "회원 ID는 4자 이상 20자 이내로 입력하세요.")
     private String memberId;
 
-    @NotBlank(message = "이메일은 필수 입력입니다.")
-    @Email(message = "유효한 이메일 주소를 입력하세요.")
-    private String email;
-
     //@NotBlank(message = "비밀번호는 필수 입력입니다.")
     @Size(min = 4, message = "비밀번호는 최소 4자 이상이어야 합니다.")
     private String password;
 
-    @NotBlank(message = "성별을 필수 입력입니다.")
-    private String gender;
-
     //@NotBlank(message = "이름은 필수 입력입니다.")
     @Size(min = 2, max = 30, message = "이름은 2자 이상 30자 이내로 입력하세요.")
     private String name;
+
+    @NotBlank(message = "이메일은 필수 입력입니다.")
+    @Email(message = "유효한 이메일 주소를 입력하세요.")
+    private String email;
+
+    @NotBlank(message = "성별은 필수 입력입니다.")
+    private String gender;
 
     @NotBlank(message = "생년월일은 필수 입력입니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
