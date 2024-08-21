@@ -22,8 +22,8 @@ public class OAuth2Config {
      * - OAuth2UserService 빈 등록
      * - OAuth2UserService 인터페이스를 구현한 CustomOAuth2UserService 빈 등록
      */
-    @Bean
+ /*   @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService(MemberService memberService, PasswordEncoder passwordEncoder) {
         return new CustomOAuth2UserService(memberService, passwordEncoder);
-    }
+    }*/
 }

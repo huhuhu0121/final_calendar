@@ -1,6 +1,6 @@
 package com.javalab.calendar.security;
 
-import com.javalab.calendar.dto.CustomUser;
+//import com.javalab.calendar.dto.CustomUser;
 import com.javalab.calendar.service.MemberService;
 import com.javalab.calendar.vo.MemberVo;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final MemberService memberService;
+    /*private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -83,5 +83,5 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // memberVo.setMember_Id(...);
 
         return memberVo;
-    }
+    }*/
 }

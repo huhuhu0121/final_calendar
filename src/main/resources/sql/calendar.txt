@@ -182,3 +182,19 @@ location, start_date, end_date, memo, all_day, publice)
 values(1, 1, 1, 123, '여행', '안산', sysdate, sysdate, '놀러가자', 1, 1);
 
 commit;
+
+-- calender 테이블 event_id fk 설정했다면 삭제하세요
+alter table calender drop CONSTRAINT FK_EVENT_TO_calender_1;
+
+-- 컬럼 추가 (event에 calen_ID 추가 )
+ALTER TABLE EVENT ADD calen_ID int;
+
+-- 컬럼 삭제
+ALTER TABLE calender drop column event_ID;
+
+-- (변경) event 테이블에 calender 테이블 fk로 설정
+ALTER TABLE event
+ADD CONSTRAINT fk_calen_ID FOREIGN KEY (calen_ID)
+REFERENCES calender(calen_ID);
+
+
