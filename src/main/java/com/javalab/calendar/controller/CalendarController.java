@@ -30,7 +30,7 @@
 //    public String viewCalendar(@AuthenticationPrincipal MemberVo memberVo, Model model) {
 //        CalendarDto calendar = calendarService.getCalendarByUserId(memberVo.getMemberId());
 //        model.addAttribute("calendar", calendar);
-//        return "calendar/calendarView"; // 캘린더 상세 페이지로 이동
+//        return "calendar/maincalendar"; // 캘린더 상세 페이지로 이동
 //    }
 //
 //    /**

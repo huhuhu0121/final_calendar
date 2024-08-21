@@ -180,6 +180,8 @@ REFERENCES EVENT (
 
 INSERT INTO member (member_id, code_id, email, name, password, gender, birth, image, bio, social)
 VALUES ('java', 1, 'a@a.com', '홍길동', '$2a$10$Sd3oeSdhSqpQFw9Cko0.p.Pt7jmW.54ybTZVBPsHfnGngWGZzyKxu', 'male', sysdate, '안녕', '2', 2);
+INSERT INTO member (member_id, code_id, email, name, password, gender, birth, image, bio, social)
+VALUES ('davin', 1, 'd@a.com', '관리자', '$2a$10$Sd3oeSdhSqpQFw9Cko0.p.Pt7jmW.54ybTZVBPsHfnGngWGZzyKxu', 'female', sysdate, '안녕하세요', '2', 2);
 commit;
 
 -- member 테이블에 유니크 제약 조건 추가

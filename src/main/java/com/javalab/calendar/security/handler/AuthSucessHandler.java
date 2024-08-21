@@ -26,7 +26,7 @@ public class AuthSucessHandler extends SimpleUrlAuthenticationSuccessHandler {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         // 사용자의 역할에 따라 리다이렉션할 URL 설정
-        String targetUrl = "/event/list.do"; // 기본 URL (user인 경우)
+        String targetUrl = "/maincalendar"; // 기본 URL (user인 경우)
 
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
