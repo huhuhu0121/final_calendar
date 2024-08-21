@@ -12,7 +12,7 @@ import java.util.List;
 public interface EventMapper {
 
 	// 특정 ID의 이벤트 조회
-	EventVo getEvent(@Param("event_id") int event_id);
+	EventVo getEvent(@Param("eventId") int eventId);
 
 	// 모든 이벤트 조회
 	List<EventVo> listEvent();
@@ -24,5 +24,5 @@ public interface EventMapper {
 	int updateEvent(EventVo eventVo);
 
 	// 이벤트 삭제
-	int deleteEvent(@Param("event_id") int event_idd);
+	int deleteEvent(@Param("eventId") int eventId);
 }

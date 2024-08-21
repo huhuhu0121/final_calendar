@@ -21,6 +21,13 @@
         <result property="publice" column="publice"/>
     </resultMap>
 
+    <resultMap id="eventResultMap" type="EventVo">
+        <!-- 각 필드에 대한 매핑 정의 -->
+        <id property="id" column="event_id"/>
+        <result property="name" column="event_name"/>
+        <!-- 추가 필드 매핑 -->
+    </resultMap>
+
     <!-- 모든 이벤트를 조회하는 쿼리 -->
     <select id="listEvent" resultMap="eventMap">
         SELECT * FROM EVENT
