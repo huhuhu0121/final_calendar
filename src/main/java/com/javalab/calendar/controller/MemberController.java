@@ -43,6 +43,7 @@ public class MemberController {
         if (!model.containsAttribute("memberFormDto")) {
             model.addAttribute("memberFormDto", new MemberFormDto());
         }
+        log.info("getmapping에서 membercreate.html 불러옴");
         return "member/memberCreate";
     }
 
@@ -50,17 +51,19 @@ public class MemberController {
      * 회원 가입 처리
      */
     @PostMapping("/join.do")
-    public String registerMember(@Valid @ModelAttribute("memberFormDto") MemberFormDto memberFormDto,
+    public String save(@Valid @ModelAttribute("memberFormDto") MemberFormDto memberFormDto,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             log.info("회원가입 데이터 검증 오류 있음");
+            log.info(memberFormDto);
 
             Map<String, String> errorMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error ->
                     errorMap.put(error.getField(), error.getDefaultMessage())
             );
+            log.info(errorMap);
             redirectAttributes.addFlashAttribute("errorMap", errorMap);
             redirectAttributes.addFlashAttribute("memberFormDto", memberFormDto);
             return "redirect:/member/join.do";
@@ -73,15 +76,19 @@ public class MemberController {
             role.setRoleName("ROLE_USER"); // 기본 권한 설정
 
             MemberVo member = MemberVo.builder()
-                    .memberId(memberFormDto.getEmail()) // 이메일을 memberId로 사용
+                    .memberId(memberFormDto.getMemberId()) // 이메일을 memberId로 사용
                     .password(passwordEncoder.encode(memberFormDto.getPassword()))
                     .name(memberFormDto.getName())
                     .email(memberFormDto.getEmail())
+                    .gender(memberFormDto.getGender())
+                    .birth(memberFormDto.getBirth())
+                    .bio(memberFormDto.getBio())
                     // 권한은 기본 권한으로 빌더패턴으로 생성
                     .roles(List.of(role))
                     .build();
 
             memberService.saveMemberWithRole(member);
+            log.info(memberFormDto);
         } catch (IllegalStateException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/member/join.do";

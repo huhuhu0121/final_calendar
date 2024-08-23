@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout.html}"> <!-- 레이아웃 템플릿을 상속받아 사용 -->
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <!-- 페이지 기본 설정 -->
@@ -13,48 +12,96 @@
 
     <!-- 추가적인 스타일 정의 -->
     <style>
-        .container {
-            margin-top: 20px; /* 컨테이너 상단 여백 */
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* 컨테이너 내부 요소들을 가운데 정렬 */
-        }
-        .table thead th {
-            background-color: #f8f9fa; /* 테이블 헤더 배경색 */
-            color: #343a40; /* 테이블 헤더 글자색 */
-        }
-        .table tbody tr:nth-child(even) {
-            background-color: #f2f2f2; /* 짝수 행 배경색 */
-        }
-        .table tbody tr:hover {
-            background-color: #e9ecef; /* 행 마우스 오버 시 배경색 */
-        }
-        .btn-primary {
-            background-color: #007bff; /* 기본 버튼 색상 */
-            border-color: #007bff; /* 기본 버튼 테두리 색상 */
-        }
-        .btn-primary:hover {
-            background-color: #0056b3; /* 버튼 마우스 오버 시 색상 */
-            border-color: #004085; /* 버튼 마우스 오버 시 테두리 색상 */
-        }
-        .profile-img {
-            width: 50px; /* 프로필 이미지 너비 */
-            height: 50px; /* 프로필 이미지 높이 */
-            border-radius: 50%; /* 프로필 이미지 둥글게 */
-        }
-        .form-group {
-            width: 500px; /* 입력 필드의 너비 */
-        }
-        h3 {
-            text-align: center; /* 회원 가입 제목 가운데 정렬 */
-        }
+        /* 전체적인 배경색과 폰트 설정 */
+body {
+    background-color: #f5f7fa; /* 페이지 전체 배경색 */
+    font-family: 'Arial', sans-serif; /* 기본 폰트 */
+    color: #343a40; /* 기본 텍스트 색상 */
+}
+
+/* 컨테이너 스타일 */
+.container {
+    margin-top: 50px; /* 상단 여백 조정 */
+    background-color: #ffffff; /* 컨테이너 배경색 */
+    border-radius: 10px; /* 둥근 모서리 */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* 컨테이너에 그림자 추가 */
+    padding: 20px; /* 패딩 추가 */
+    max-width: 600px; /* 최대 폭을 400px로 제한 */
+    align-items: center; /* 컨테이너 내부 요소들을 가운데 정렬 */
+}
+
+/* 입력 필드 스타일 */
+.form-group label {
+    font-weight: bold; /* 라벨을 굵게 */
+    color: #495057; /* 라벨 색상 */
+}
+
+.form-control {
+    border-radius: 5px; /* 필드 모서리 둥글게 */
+    border: 1px solid #ced4da; /* 필드 테두리 */
+    padding: 10px; /* 패딩 추가 */
+    transition: all 0.3s ease; /* 필드 상태 변경에 대한 애니메이션 추가 */
+}
+
+/* 필드 포커스 시 스타일 */
+.form-control:focus {
+    border-color: #80bdff; /* 포커스 시 테두리 색상 */
+    box-shadow: 0px 0px 5px rgba(128, 189, 255, 0.5); /* 포커스 시 그림자 */
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background-color: #007bff; /* 기본 버튼 색상 */
+    border-color: #007bff; /* 기본 버튼 테두리 색상 */
+    padding: 10px 20px; /* 패딩 추가 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* 버튼 상태 변경에 대한 애니메이션 */
+}
+
+/* 버튼 마우스 오버 시 스타일 */
+.btn-primary:hover {
+    background-color: #0056b3; /* 버튼 마우스 오버 시 색상 */
+    border-color: #004085; /* 버튼 마우스 오버 시 테두리 색상 */
+}
+
+/* 프로필 이미지 필드 스타일 */
+.form-group .profile-img {
+    width: 60px; /* 프로필 이미지 너비 */
+    height: 60px; /* 프로필 이미지 높이 */
+    border-radius: 50%; /* 프로필 이미지 둥글게 */
+    margin-top: 10px; /* 상단 여백 */
+}
+
+/* 입력 필드의 에러 메시지 스타일 */
+.small.text-danger {
+    font-size: 0.875rem; /* 에러 메시지 폰트 크기 */
+    margin-top: 5px; /* 상단 여백 */
+    display: block; /* 블록으로 표시 */
+}
+
+/* 제목 스타일 */
+h3 {
+    color: #343a40; /* 제목 텍스트 색상 */
+    font-weight: bold; /* 제목 텍스트 굵게 */
+    margin-bottom: 20px; /* 하단 여백 */
+}
+
+/* 파일 입력 필드 스타일 */
+input[type="file"] {
+    border: none; /* 기본 테두리 제거 */
+    background-color: #f8f9fa; /* 배경색 */
+    padding: 10px; /* 패딩 */
+    cursor: pointer; /* 커서 변경 */
+}
+
     </style>
 </head>
 
 <!-- 페이지의 주요 내용 -->
 <div layout:fragment="content">
     <div class="container"> <!-- 페이지 내용을 담고 있는 컨테이너 -->
-        <h3 layout:fragment="body-title">회원 가입</h3> <!-- 페이지 제목 -->
+        <h3 layout:fragment="head-title">DoFriend</h3> <!-- 페이지 제목 -->
+        <h4 layout:fragment="body-title">회원 가입</h4> <!-- 페이지 제목 -->
 
         <div class="mt-5"> <!-- 가입 폼을 담고 있는 섹션 -->
             <form th:action="@{/member/join.do}" th:object="${memberFormDto}" method="post"> <!-- 가입 폼 시작 -->
@@ -115,17 +162,17 @@
                 <!-- 생년월일 입력 필드 -->
                 <div class="form-group">
                     <label for="birth">생년월일</label>
-                    <input type="date" id="birth" th:field="*{birth}" class="form-control"/>
+                    <input type="date" id="birth" th:field="*{birth}" class="form-control" pattern="\d{4}-\d{2}-\d{2}" />
                     <!-- 생년월일에 대한 에러 메시지 표시 -->
                     <small class="text-danger" th:if="${errorMap != null and errorMap.containsKey('birth')}"
                            th:text="${errorMap.get('birth')}"></small>
                 </div>
 
                 <!-- 프로필 사진 입력 필드 -->
-                <div class="form-group">
-                    <label for="image">프로필 사진</label>
-                    <input type="file" id="image" th:field="*{image}" class="form-control"/>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label for="image">프로필 사진</label>-->
+<!--                    <input type="file" id="image" th:field="*{image}" class="form-control"/>-->
+<!--                </div>-->
 
                 <!-- 자기소개 입력 필드 -->
                 <div class="form-group">

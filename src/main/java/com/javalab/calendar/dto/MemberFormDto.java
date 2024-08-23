@@ -3,9 +3,11 @@ package com.javalab.calendar.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -41,8 +43,14 @@ public class MemberFormDto {
     @NotBlank(message = "성별은 필수 입력입니다.")
     private String gender;
 
-    @NotBlank(message = "생년월일은 필수 입력입니다.")
+    @NotNull(message = "생년월일은 필수 입력입니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birth;
+
+    // 이미지 필드 추가
+//    private MultipartFile image;
+
+    // 자기소개 필드 추가
+    private String bio;
 }

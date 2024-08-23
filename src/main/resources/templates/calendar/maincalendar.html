@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="kr" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>FullCalendar with Spring Boot</title>
@@ -97,8 +97,10 @@
 <body>
 <form action="/maincalendar" method="post">
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="index.html">Calendar</a>
-        <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="modal" data-target="#loginModal"><a href="login.html">로그인</a></button>
+        <a class="navbar-brand" sec:authentication="name" href="#">님의 캘린더</a>
+        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/member/logout.do}">
+            로그아웃
+        </a>
     </nav>
 
     <div id="calendar"></div>

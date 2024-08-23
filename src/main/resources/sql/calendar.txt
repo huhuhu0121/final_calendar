@@ -14,7 +14,7 @@ CREATE TABLE EVENT (
 CREATE TABLE member (
     member_id    VARCHAR2(50)        NOT NULL,
     code_ID    NUMBER        NULL,
-    EMAIL    VARCHAR2(200)        NOT NUL unique,
+    EMAIL    VARCHAR2(200)        NOT NULL unique,
     NAME    VARCHAR2(100)        NOT NULL,
     PASSWORD    VARCHAR2(200)        NOT NULL,
     GENDER    VARCHAR2(100)        NOT NULL,
@@ -22,14 +22,6 @@ CREATE TABLE member (
     social NUMBER(1) default 0,     -- 소셜 로그인 여부(0: 일반, 1: 소셜)
     IMAGE    VARCHAR2(255)        NULL,
     BIO    VARCHAR2(255)        NULL
-);
-
-CREATE TABLE member_role (
-    member_id VARCHAR2(50),
-    role_id NUMBER,
-    PRIMARY KEY (member_id, role_id),
-    CONSTRAINT fk_member_role_member FOREIGN KEY (member_id) REFERENCES member(member_id),
-    CONSTRAINT fk_member_role_role FOREIGN KEY (role_id) REFERENCES role(role_id)
 );
 
 CREATE TABLE role (
@@ -181,7 +173,7 @@ REFERENCES EVENT (
 INSERT INTO member (member_id, code_id, email, name, password, gender, birth, image, bio, social)
 VALUES ('java', 1, 'a@a.com', '홍길동', '$2a$10$Sd3oeSdhSqpQFw9Cko0.p.Pt7jmW.54ybTZVBPsHfnGngWGZzyKxu', 'male', sysdate, '안녕', '2', 2);
 INSERT INTO member (member_id, code_id, email, name, password, gender, birth, image, bio, social)
-VALUES ('davin', 1, 'd@a.com', '관리자', '$2a$10$Sd3oeSdhSqpQFw9Cko0.p.Pt7jmW.54ybTZVBPsHfnGngWGZzyKxu', 'female', sysdate, '안녕하세요', '2', 2);
+VALUES ('davin', 2, 'd@a.com', '관리자', '$2a$10$Sd3oeSdhSqpQFw9Cko0.p.Pt7jmW.54ybTZVBPsHfnGngWGZzyKxu', 'female', sysdate, '안녕하세요', '2', 2);
 commit;
 
 -- member 테이블에 유니크 제약 조건 추가
@@ -204,6 +196,22 @@ CREATE TABLE member_role (
 -- MemberRole 테이블에 사용자 권한 추가
 INSERT INTO member_role (member_id, role_id) VALUES ('java', 1);  -- ROLE_USER
 INSERT INTO member_role (member_id, role_id) VALUES ('davin', 2);  -- ROLE_MANAGER
+
+-- 회원별 프로필 사진
+CREATE TABLE member_img (
+        memberimg_Id int not null,
+        member_id VARCHAR2(50),
+        img_path VARCHAR2(500),
+        file_name VARCHAR2(500),
+        constraint pk_member_img primary key(memberimg_Id),
+        constraint fk_member_id FOREIGN KEY (member_id) REFERENCES member (member_id)
+);
+
+CREATE SEQUENCE seq_img
+   START WITH 1
+   INCREMENT BY 1
+   NOCACHE
+   NOCYCLE;
 
 commit;
 

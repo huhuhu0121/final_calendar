@@ -1,8 +1,8 @@
 -- 사용자 조회
 show user;
 -- 계정 생성
-create user calendar identified by 1234;
+create user calendar2 identified by 1234;
 -- 권한부여
-grant connect, resource to calendar;
+grant connect, resource to calendar2;
 -- tablespace 사용권한 부여
-grant unlimited tablespace to calendar;
+grant unlimited tablespace to calendar2;

@@ -13,6 +13,7 @@
         <result property="name" column="name"/>
         <result property="password" column="password"/>
         <result property="gender" column="gender"/>
+        <result property="image" column="image"/>
         <result property="birth" column="birth"/>
         <collection property="roles" ofType="com.javalab.calendar.vo.Role" resultMap="roleResultMap"/>
     </resultMap>
@@ -75,8 +76,8 @@
 
     <!-- 새로운 회원 저장 -->
     <insert id="save" parameterType="MemberVo">
-        INSERT INTO member (member_id, password, name, email, birth, gender, image, bio, social, code_id)
-        VALUES (#{memberId}, #{password}, #{name}, #{email}, #{birth}, #{gender}, #{image}, #{bio}, #{social}, seq_code_id.nextval)
+        INSERT INTO member (member_id, password, name, email, birth, gender, image, bio, code_id)
+        VALUES (#{memberId}, #{password}, #{name}, #{email}, #{birth}, #{gender}, null, #{bio}, seq_code_id.nextval)
     </insert>
 
     <!-- 회원의 역할 저장 -->
